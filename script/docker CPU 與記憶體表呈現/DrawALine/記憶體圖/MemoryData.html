@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+       
+    <!-- 第一張圖(GitLab Memory Usage Chart) -->
+    <h1>
+        GitLab Memory Usage Chart
+    </h1>
+    <canvas id="gitlabmemoryChart"></canvas>
+    <!-- 第二張圖(Jenkins Memory Usage Chart) -->
+    <h1>
+        Jenkins Memory Usage Chart
+    </h1>
+    <canvas id="jenkinsmemoryChart"></canvas>
+
+    <!-- 第三張圖(MongoDB Memory Usage Chart) -->
+    <h1>
+        MongoDB Memory Usage Chart
+    </h1>
+    <canvas id="mongomemoryChart"></canvas>
+    <!-- 第四張圖(Sonarqube Memory Usage Chart) -->
+    <h1>
+        Sonarqube Memory Usage Chart
+    </h1>
+    <canvas id="sonarqubememoryChart"></canvas>
+    <!-- 第五張圖(Redmine Memory Usage Chart) -->
+    <h1>
+        Redmine Memory Usage Chart
+    </h1>
+    <canvas id="redminememoryChart"></canvas>
+    
+    <!-- 第六張圖(Memory data) -->
+    <h1>
+        Memory data
+    </h1>
+    <canvas id="combinedMemoryChart"></canvas>
+<script>
+    //使用 Promise.all 確保所有數據都獲取完畢後再執行後續操作
+    Promise.all([
+    // 發送 GET 請求獲取 GitLab 數據
+    fetch('/GitLaboneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+         // 從返回的數據中獲取 GitLab 數據
+        const gitlabData = dataArray[0];
+        // 獲取數據的標籤
+        const labels = gitlabData.labels;
+        // 獲取 GitLab 的記憶體使用百分比
+        const gitlabMemoryPercentages = gitlabData.memoryPercentages;
+        // 獲取繪製圖表的畫布元素
+        const ctx = document.getElementById('gitlabmemoryChart').getContext('2d');
+        // 使用 Chart.js 創建折線圖
+        new Chart(ctx, {
+            type: 'line',// 圖表類型為折線圖
+            data: {
+                labels: labels,// x 軸標籤為時間標籤
+                datasets: [
+                {
+                    label: 'Gitlab Memory Percentage',// 圖例標籤
+                    data: gitlabMemoryPercentages,// 數據為 GitLab 的記憶體使用百分比
+                    borderColor: 'rgba(255, 99, 132, 1)',// 折線顏色
+                    backgroundColor: 'rgba(255, 99, 132, 1)',// 折線下的填充顏色
+                    borderWidth: 1// 折線寬度
+                    },
+
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+    //第二張圖
+    Promise.all([
+    fetch('/jenkinsoneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+        const jenkinsData = dataArray[0];
+        const labels = jenkinsData.labels;
+        const jenkinsMemoryPercentages = jenkinsData.memoryPercentages;
+        const ctx = document.getElementById('jenkinsmemoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                {
+                    label: 'Jenkins Memory Percentage',
+                    data: jenkinsMemoryPercentages,
+                    borderColor: 'rgba(0, 255, 0, 1)',
+                    backgroundColor: 'rgba(0, 255, 0, 1)',
+                    borderWidth: 1
+                    },
+
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+    //第三張圖
+    Promise.all([
+    fetch('/mongoDBoneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+        const mongoDBData = dataArray[0];
+        const labels = mongoDBData.labels;
+        const mongoDBMemoryPercentages = mongoDBData.memoryPercentages;
+        const ctx = document.getElementById('mongomemoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                {
+                    label: 'MongoDB Memory Percentage',
+                    data: mongoDBMemoryPercentages,
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    backgroundColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 1
+                    },
+
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+    //第四張圖
+    Promise.all([
+    fetch('/sonarqubeoneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+        const sonarqubeData = dataArray[0];
+        const labels = sonarqubeData.labels;
+        const sonarqubeMemoryPercentages = sonarqubeData.memoryPercentages;
+        const ctx = document.getElementById('sonarqubememoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                {
+                    label: 'Sonarqube Memory Percentage',
+                    data: sonarqubeMemoryPercentages,
+                    borderColor: 'rgba(128, 0, 128, 1)',
+                    backgroundColor: 'rgba(128, 0, 128, 1)',
+                    borderWidth: 1
+                },
+
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+
+    //第五張圖
+
+
+    Promise.all([
+    fetch('/redmineoneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+        const redmineData = dataArray[0];
+        const labels = redmineData.labels;
+        const redmineMemoryPercentages = redmineData.memoryPercentages;
+        const ctx = document.getElementById('redminememoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                {
+                    label: 'Redmine Memory Percentage',
+                    data: redmineMemoryPercentages,
+                    borderColor: 'rgba(255, 255, 0, 1)',
+                    backgroundColor: 'rgba(255, 255, 0, 1)',
+                    borderWidth: 1
+                },
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+        Promise.all([
+            // 發起對不同API的請求並解析JSON數據
+            fetch('/GitLaboneDaysgetData').then(response => response.json()),
+            fetch('/jenkinsoneDaysgetData').then(response => response.json()),
+            fetch('/mongoDBoneDaysgetData').then(response => response.json()),
+            fetch('/sonarqubeoneDaysgetData').then(response => response.json()),
+            fetch('/redmineoneDaysgetData').then(response => response.json())
+        ]).then(dataArray => {
+            // 將不同API的數據分配給相應的變數
+            const gitlabData = dataArray[0];
+            const jenkinsData = dataArray[1];
+            const mongoDBData = dataArray[2];
+            const redmineData = dataArray[3];
+            const sonarqubeData = dataArray[4];
+            // 從每個API的數據中提取所需的標籤和內存百分比數據
+            const labels = gitlabData.labels; // 提取 GitLab 數據中的標籤
+            const gitlabMemoryPercentages = gitlabData.memoryPercentages; // 提取 GitLab 數據中的內存百分比數據
+            const jenkinsMemoryPercentages = jenkinsData.memoryPercentages; // 提取 Jenkins 數據中的內存百分比數據
+            const mongoDBMemoryPercentages = mongoDBData.memoryPercentages; // 提取 MongoDB 數據中的內存百分比數據
+            const sonarqubeMemoryPercentages = sonarqubeData.memoryPercentages; // 提取 SonarQube 數據中的內存百分比數據
+            const redmineMemoryPercentages = redmineData.memoryPercentages; // 提取 Redmine 數據中的內存百分比數據
+            // 獲取用於繪製圖表的Canvas上下文
+            const ctx = document.getElementById('combinedMemoryChart').getContext('2d');
+            // 創建並配置圖表
+            new Chart(ctx, {
+                type: 'line',// 圖表類型為線性圖
+                data: {
+                    labels: labels,// 圖表標籤為各個 API 返回的標籤
+                    datasets: [
+                        {
+                            label: 'Gitlab Memory Percentage', // 數據集的標籤
+                            data: gitlabMemoryPercentages, // 數據集的數據
+                            borderColor: 'rgba(255, 99, 132, 1)', // 線條顏色
+                            backgroundColor: 'rgba(255, 99, 132, 1)', // 填充顏色
+                            borderWidth: 1 // 線條寬度
+                        },
+                        {
+                            label: 'Jenkins Memory Percentage',
+                            data: jenkinsMemoryPercentages,
+                            borderColor: 'rgba(0, 255, 0, 1)',
+                            backgroundColor: 'rgba(0, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'MongoDB Memory Percentage',
+                            data: mongoDBMemoryPercentages,
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            backgroundColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Redmine Memory Percentage',
+                            data: redmineMemoryPercentages,
+                            borderColor: 'rgba(255, 255, 0, 1)',
+                            backgroundColor: 'rgba(255, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Sonarqube Memory Percentage',
+                            data: sonarqubeMemoryPercentages,
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            backgroundColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

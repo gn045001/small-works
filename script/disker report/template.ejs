@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>觀察電腦硬碟狀態相關資訊</title>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #Table th {
+            background-color: rgba(230, 13, 67, 0.493);
+            text-align: center;  
+            padding: 5px; 
+        } 
+
+        #Table td {
+            text-align: center; 
+            padding: 10px; 
+            width: 30%; 
+        } 
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>觀察電腦硬碟狀態相關資訊</h1>
+        <table id="Table" border="1">
+            <thead>
+                <tr>
+                    <th>Filesystem</th>
+                    <th>Size</th>
+                    <th>Used</th>
+                    <th>Available</th>
+                    <th>Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% dictionaries.forEach(container => { %>
+                <tr><td><%= container.Filesystem %></td>
+                    <td><%= container.Size %></td>
+                    <td><%= container.Used %></td>
+                    <td><%= container.Available %></td>
+                    <td><%= container['Use%'] %></td></tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

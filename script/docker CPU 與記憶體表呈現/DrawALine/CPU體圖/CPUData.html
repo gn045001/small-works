@@ -1,0 +1,306 @@
+<!-- version: 0.1, date: 20240430, Creator: jiasian.lin -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CPU Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <!-- 第一張圖(GitLab CPU Usage Chart) -->
+    <h1>
+        GitLab CPU Usage Chart
+    </h1>
+    <canvas id="gitlabCPUChart"></canvas>
+    <!-- 第二張圖(Jenkins CPU Usage Chart) -->
+    <h1>
+        Jenkins CPU Usage Chart
+    </h1>
+    <canvas id="jenkinsCPUChart"></canvas>
+    <!-- 第三張圖(MongoDB CPU Usage Chart) -->
+    <h1>
+        MongoDB CPU Usage Chart
+    </h1>
+    <canvas id="mongoCPUChart"></canvas>
+    <!-- 第四張圖(Sonarqube CPU Usage Chart) -->
+    <h1>
+        Sonarqube CPU Usage Chart
+    </h1>
+    <canvas id="sonarqubeCPUChart"></canvas>
+    <!-- 第五張圖(Redmine CPU Usage Chart) -->
+    <h1>
+        Redmine CPU Usage Chart
+    </h1>
+    <canvas id="redmineCPUChart"></canvas>
+    <!-- 第六張圖(CPU data) -->
+    <h1>
+        CPU data
+    </h1>
+    <canvas id="combinedCPUChart"></canvas> 
+
+
+<script>
+    //使用 Promise.all 方法發送一個 GET 請求到指定的 URL (/GitLaboneDaysgetData)，並將返回的 JSON 數據解析為一個數組。
+    Promise.all([
+    // 發送GET請求獲取GitLab數據，並在獲取到數據後將其轉換為JSON格式
+    fetch('/GitLaboneDaysgetData').then(response => response.json()),
+    ]).then(dataArray => {
+        //從數組中取出第一個元素，即 GitLab 的數據，並分別獲取標籤 (labels) 和 CPU 使用率 (cpuPercentages)。
+        const gitlabData = dataArray[0];
+        // 從GitLab數據中獲取標籤和CPU百分比數據
+        const labels = gitlabData.labels;
+        const gitlabMemoryPercentages = gitlabData.cpuPercentages;
+        // 獲取Canvas元素的上下文
+        const ctx = document.getElementById('gitlabCPUChart').getContext('2d');
+        //使用 Chart.js 繪製折線圖。設置折線圖的類型為 'line'，數據為 CPU 使用率，標籤為時間標籤。
+        new Chart(ctx, {
+            // 指定圖表類型為折線圖
+            type: 'line',
+             // 指定圖表數據
+            data: {
+                // X軸標籤
+                labels: labels,
+                datasets: [
+                    {
+                    label: 'Gitlab CPU_Percentage', // 數據集標籤
+                    data: gitlabMemoryPercentages, // 數據集數據
+                    borderColor: 'rgba(255, 99, 132, 1)', // 線條顏色
+                    backgroundColor: 'rgba(255, 99, 132, 1)', // 線條填充顏色
+                    borderWidth: 1 // 線條寬度
+                    },
+
+                ]
+            },
+            // 指定圖表選項
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true// Y軸從0開始
+                    }
+                }
+            }
+        });
+    });
+
+        //第二張圖
+        Promise.all([
+            fetch('/jenkinsoneDaysgetData').then(response => response.json()),
+        ]).then(dataArray => {
+            const jenkinsData = dataArray[0];
+            const labels = jenkinsData.labels;
+            const jenkinsMemoryPercentages = jenkinsData.cpuPercentages;
+            const ctx = document.getElementById('jenkinsCPUChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'jenkins CPU_Percentage',
+                            data: jenkinsMemoryPercentages,
+                            borderColor: 'rgba(0, 255, 0, 1)',
+                            backgroundColor: 'rgba(0, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+        //第三張圖
+        Promise.all([
+        fetch('/mongoDBoneDaysgetData').then(response => response.json()),
+        ]).then(dataArray => {
+            const gitlabData = dataArray[0];
+            const labels = gitlabData.labels;
+            const gitlabMemoryPercentages = gitlabData.cpuPercentages;
+            const ctx = document.getElementById('mongoCPUChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'mongoDB CPU_Percentage',
+                            data: gitlabMemoryPercentages,
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            backgroundColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        },
+
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+        //第四張圖
+        Promise.all([
+        fetch('/sonarqubeoneDaysgetData').then(response => response.json()),
+        ]).then(dataArray => {
+            const gitlabData = dataArray[0];
+            const labels = gitlabData.labels;
+            const gitlabMemoryPercentages = gitlabData.cpuPercentages;
+            const ctx = document.getElementById('sonarqubeCPUChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'sonarqube CPU_Percentage',
+                            data: gitlabMemoryPercentages,
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            backgroundColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1
+                        },
+
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+        //第五張圖
+        Promise.all([
+        fetch('/redmineoneDaysgetData').then(response => response.json()),
+        ]).then(dataArray => {
+            const gitlabData = dataArray[0];
+            const labels = gitlabData.labels;
+            const redmineMemoryPercentages = gitlabData.cpuPercentages;
+            const ctx = document.getElementById('redmineCPUChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Redmine CPU_Percentage',
+                            data: redmineMemoryPercentages,
+                            borderColor: 'rgba(255, 255, 0, 1)',
+                            backgroundColor: 'rgba(255, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+ 
+
+        //使用 Promise.all 同時發送五個 HTTP 請求，分別獲取 GitLab、Jenkins、MongoDB、Redmine 和 Sonarqube 的數據。
+        Promise.all([
+            fetch('/GitLaboneDaysgetData').then(response => response.json()),
+            fetch('/jenkinsoneDaysgetData').then(response => response.json()),
+            fetch('/mongoDBoneDaysgetData').then(response => response.json()),
+            fetch('/sonarqubeoneDaysgetData').then(response => response.json()),
+            fetch('/redmineoneDaysgetData').then(response => response.json())
+        //在 then 方法中，將返回的數據陣列解構為各個變數，並為每個變數取得相應的數據。
+        ]).then(dataArray => {
+        // 所有請求完成後，dataArray 將包含每個請求的返回數據
+
+        // 將返回的數據分別保存到不同的變數中
+            const gitlabData = dataArray[0];
+            const jenkinsData = dataArray[1];
+            const mongoDBData = dataArray[2];
+            const redmineData = dataArray[3];
+            const sonarqubeData = dataArray[4];
+            //從各個數據中取得所需的標籤和 CPU 使用率數據。
+            const labels = gitlabData.labels;
+            const gitlabMemoryPercentages = gitlabData.cpuPercentages;
+            const jenkinsMemoryPercentages = jenkinsData.cpuPercentages;
+            const mongoDBMemoryPercentages = mongoDBData.cpuPercentages;
+            const redmineMemoryPercentages = redmineData.cpuPercentages;
+            const sonarqubeMemoryPercentages = sonarqubeData.cpuPercentages;
+            //最後，使用取得的數據來繪製一個折線圖，展示各個應用程式的 CPU 使用率情況。
+            const ctx = document.getElementById('combinedCPUChart').getContext('2d');
+             // 使用 Chart.js 創建一個線性圖表
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,// X 軸標籤
+                    datasets: [
+                        {
+                            label: 'Gitlab CPU_Percentage', // 數據集的標籤
+                            data: gitlabMemoryPercentages, // 數據集的數據
+                            borderColor: 'rgba(255, 99, 132, 1)', // 線條顏色
+                            backgroundColor: 'rgba(255, 99, 132, 1)', // 填充顏色
+                            borderWidth: 1 // 線條寬度
+                        },
+                        {
+                            label: 'Jenkins CPU_Percentage',
+                            data: jenkinsMemoryPercentages,
+                            borderColor: 'rgba(0, 255, 0, 1)',
+                            backgroundColor: 'rgba(0, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'MongoDB CPU_Percentage',
+                            data: mongoDBMemoryPercentages,
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            backgroundColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Redmine CPU_Percentage',
+                            data: redmineMemoryPercentages,
+                            borderColor: 'rgba(255, 255, 0, 1)',
+                            backgroundColor: 'rgba(255, 255, 0, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Sonarqube CPU_Percentage',
+                            data: sonarqubeMemoryPercentages,
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            backgroundColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true // Y 軸從零開始
+                        }
+                    }
+                }
+            });
+        });        
+
+    </script>
+</body>
+</html>
+

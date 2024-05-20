@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenShift TLS certificate expire date</title>
+    <style>
+        table {
+            border-collapse: collapse;/* 合併邊框 */
+            width: 100%;/* 表格寬度為100% */
+            margin-bottom: 20px; /* 添加底部間距 */
+        }
+        th{
+            border: 1px solid #ddd;/* 設置表格頭部邊框 */
+            padding: 8px;/* 內邊距 */
+            text-align: left;/* 文字左對齊 */
+            justify-content: center; /* 水平居中對齊 */
+            background-color: #f2f2f2;/* 背景色 */
+        }
+        caption {
+            margin-top: 2cm; /* 下方元素與上方元素之間的間距為1cm */
+            font-size: 36px;/* 字體大小 */
+            text-align: left; /* 文字左對齊 */
+            margin-bottom: 1cm; /* 上方元素與下方元素之間的間距為1cm */
+        }
+
+        button {
+            justify-content: center;/* 水平居中對齊 */
+            margin-top: 1cm; /* 下方元素與上方元素之間的間距為1cm */
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;/* 水平居中對齊 */
+            margin-bottom: 20px; /* 添加底部間距 */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>OpenShift TLS certificate </h1>
+    <p>
+        用來檢查 OC 的 How to list all OpenShift TLS certificate expire date <br> 
+        OpenShift TLS certificate的<a href="https://access.redhat.com/solutions/3930291">參考文件<br></a>
+        OpenShift TLS證書是用於OpenShift集群中安全通信的數字證書。TLS證書用於加密和驗證網絡通信，確保通信在客戶端和伺服器之間是私密和安全的。<br>
+    
+        在OpenShift中，TLS證書通常用於以下目的：<br><br>
+    
+        對OpenShift管理控制台（Web界面）和API服務進行加密通信。<br>
+        保護應用程序之間的通信，例如用戶端應用程序和後端服務之間的通信。<br>
+        保護OpenShift路由器（Router）提供的外部訪問。<br>
+        TLS證書由一個私鑰（Private Key）和相對應的公共證書（Public Certificate）組成。私鑰用於加密通信，而公共證書則用於驗證和解密通信。當OpenShift中的TLS證書到期時，需要更新證書以確保安全通信的持續性。
+    </p>
+
+    <!-- OpenShift TLS證書查詢 -->
+    <div class="btn-container">
+        
+        <table>
+            <caption>OpenShift TLS證書由一個私鑰 </caption>
+            <tr>
+                <td><button id="GitLabonegetDataBtn">OpenShift TLS證書查詢</button></td>
+            </tr>
+        </table>
+    </div>
+    <table id="dataTable"></table>
+    <script>
+        // 定義一個名為 fetchData 的函數，接受一個 URL 作為參數  
+        function fetchData(url) {
+            // 使用 fetch 函數發送 GET 請求到指定的 URL，並返回一個 Promise 對象
+            return fetch(url)
+                // 使用 then 方法處理 fetch 返回的 Response 對象，將其轉換為 JSON 格式
+                .then(response => response.json())
+                // 使用 then 方法處理轉換後的 JSON 數據
+                .then(data => {
+                    // 獲取表格元素
+                    const dataTable = document.getElementById('dataTable');
+                    // 清空表格中的內容，以便填充新數據
+                    dataTable.innerHTML = ''; // Clear previous data
+
+                    // 創建表格標題行
+                    const headerRow = document.createElement('tr');
+                    // 遍歷數據的第一個對象（假設數據不為空），將其鍵添加為表格的表頭
+                    Object.keys(data[0]).forEach(key => {
+                        const th = document.createElement('th');
+                        th.textContent = key;
+                        headerRow.appendChild(th);
+                    });
+                    dataTable.appendChild(headerRow);
+
+                    // 創建表格數據行
+                    data.forEach(entry => {
+                        const row = document.createElement('tr');
+                        // 將每個對象的值添加到表格行中
+                        Object.values(entry).forEach(value => {
+                            const td = document.createElement('td');
+                            td.textContent = value;
+                            row.appendChild(td);
+                        });
+                        dataTable.appendChild(row);
+                    });
+                });
+        }
+
+            // 監聽 ID 為 GitLabonegetDataBtn 的按鈕的點擊事件，並當按鈕被點擊時執行以下函數
+            document.getElementById('GitLabonegetDataBtn').addEventListener('click', async () => {
+                // 調用 fetchData 函數，並傳入指定的 URL
+                await fetchData('/GitLaboneDaysgetData');
+            });
+    </script>
+</body>
+</html>
+

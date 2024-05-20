@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>觀察電腦硬碟狀態相關資訊</title>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #Table th {
+            background-color: rgba(230, 13, 67, 0.493);
+            text-align: center;  
+            padding: 5px; 
+        } 
+
+        #Table td {
+            text-align: center; 
+            padding: 10px; 
+            width: 30%; 
+        } 
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>觀察電腦硬碟狀態相關資訊</h1>
+        <table id="Table" border="1">
+            <thead>
+                <tr>
+                    <th>Filesystem</th>
+                    <th>Size</th>
+                    <th>Used</th>
+                    <th>Available</th>
+                    <th>Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>devtmpfs</td>
+                    <td>4.0M</td>
+                    <td>0</td>
+                    <td>4.0M</td>
+                    <td>0%</td>
+                </tr>
+                
+                <tr>
+                    <td>tmpfs</td>
+                    <td>13G</td>
+                    <td>0</td>
+                    <td>13G</td>
+                    <td>0%</td>
+                </tr>
+                
+                <tr>
+                    <td>tmpfs</td>
+                    <td>4.9G</td>
+                    <td>21M</td>
+                    <td>4.9G</td>
+                    <td>1%</td>
+                </tr>
+                
+                <tr>
+                    <td>/dev/mapper/rhel-root</td>
+                    <td>70G</td>
+                    <td>20G</td>
+                    <td>51G</td>
+                    <td>28%</td>
+                </tr>
+                
+                <tr>
+                    <td>/dev/sda2</td>
+                    <td>1014M</td>
+                    <td>389M</td>
+                    <td>626M</td>
+                    <td>39%</td>
+                </tr>
+                
+                <tr>
+                    <td>/dev/mapper/rhel-home</td>
+                    <td>117G</td>
+                    <td>2.3G</td>
+                    <td>114G</td>
+                    <td>2%</td>
+                </tr>
+                
+                <tr>
+                    <td>/dev/sda1</td>
+                    <td>599M</td>
+                    <td>7.0M</td>
+                    <td>592M</td>
+                    <td>2%</td>
+                </tr>
+                
+                <tr>
+                    <td>tmpfs</td>
+                    <td>2.5G</td>
+                    <td>52K</td>
+                    <td>2.5G</td>
+                    <td>1%</td>
+                </tr>
+                
+                <tr>
+                    <td>overlay</td>
+                    <td>70G</td>
+                    <td>20G</td>
+                    <td>51G</td>
+                    <td>28%</td>
+                </tr>
+                
+                <tr>
+                    <td>overlay</td>
+                    <td>70G</td>
+                    <td>20G</td>
+                    <td>51G</td>
+                    <td>28%</td>
+                </tr>
+                
+                <tr>
+                    <td>overlay</td>
+                    <td>70G</td>
+                    <td>20G</td>
+                    <td>51G</td>
+                    <td>28%</td>
+                </tr>
+                
+                <tr>
+                    <td>tmpfs</td>
+                    <td>2.5G</td>
+                    <td>36K</td>
+                    <td>2.5G</td>
+                    <td>1%</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

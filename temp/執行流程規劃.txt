@@ -1,0 +1,12 @@
+project
+-->   raw/ (data)
+-->   report/ (html檔案)
+-->   script/ 
+5個需求方向 InputCPUdataMongoDB.js InputmemorydataMongoDB.js report.js diskrepoet.js dockerstats.js
+
+InputCPUdataMongoDB.js -->CPU資料整理
+InputmemorydataMongoDB.js -->memory資料整理
+report.js -->report整理
+diskrepoet.js -->disk report整理
+dockerstats.js -->docker 資料整理
+-->   temp/

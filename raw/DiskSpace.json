@@ -1,0 +1,12 @@
+{"Filesystem": "devtmpfs", "Size": "4.0M", "Used": "0", "Available": "4.0M", "Use%": "0%", "Mounted on": "/dev" }
+{"Filesystem": "tmpfs", "Size": "13G", "Used": "0", "Available": "13G", "Use%": "0%", "Mounted on": "/dev/shm" }
+{"Filesystem": "tmpfs", "Size": "4.9G", "Used": "21M", "Available": "4.9G", "Use%": "1%", "Mounted on": "/run" }
+{"Filesystem": "/dev/mapper/rhel-root", "Size": "70G", "Used": "20G", "Available": "51G", "Use%": "28%", "Mounted on": "/" }
+{"Filesystem": "/dev/sda2", "Size": "1014M", "Used": "389M", "Available": "626M", "Use%": "39%", "Mounted on": "/boot" }
+{"Filesystem": "/dev/mapper/rhel-home", "Size": "117G", "Used": "2.3G", "Available": "114G", "Use%": "2%", "Mounted on": "/home" }
+{"Filesystem": "/dev/sda1", "Size": "599M", "Used": "7.0M", "Available": "592M", "Use%": "2%", "Mounted on": "/boot/efi" }
+{"Filesystem": "tmpfs", "Size": "2.5G", "Used": "52K", "Available": "2.5G", "Use%": "1%", "Mounted on": "/run/user/42" }
+{"Filesystem": "overlay", "Size": "70G", "Used": "20G", "Available": "51G", "Use%": "28%", "Mounted on": "/var/lib/docker/overlay2/d5129234d8263f1ae89124da7baceca63aa5460263835ce295439f10d78edbd5/merged" }
+{"Filesystem": "overlay", "Size": "70G", "Used": "20G", "Available": "51G", "Use%": "28%", "Mounted on": "/var/lib/docker/overlay2/5b6942ba7282a484c04d6ded1a339674b190541e74f2abefc9d0881209e099cc/merged" }
+{"Filesystem": "overlay", "Size": "70G", "Used": "20G", "Available": "51G", "Use%": "28%", "Mounted on": "/var/lib/docker/overlay2/4a2af5b35bdfb6703ad821eff7d60049ff90a01a7c197825d70b3be720d778ee/merged" }
+{"Filesystem": "tmpfs", "Size": "2.5G", "Used": "36K", "Available": "2.5G", "Use%": "1%", "Mounted on": "/run/user/1000" }

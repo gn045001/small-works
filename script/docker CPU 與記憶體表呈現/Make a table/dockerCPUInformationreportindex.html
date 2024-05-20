@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retrieve Docker CPU status in MongoDB</title>
+    <style>
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px; /* 添加底部間距 */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            justify-content: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* 添加底部間距 */
+        }
+        caption {
+            font-size: 36px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CPU status</h1>
+<!--GitLab button -->
+<div class="btn-container">
+    <table>
+        <caption>GitLab Data</caption>
+        <tr>
+            <td><button id="GitLabonegetDataBtn">GitLabOneData</button></td>
+            <td><button id="GitLabtwogetDataBtn">GitLabTwoData</button></td>
+            <td><button id="GitLabthreegetDataBtn">GitLabThreeData</button></td>
+            <td><button id="GitLabfivegetDataBtn">GitLabFiveData</button></td>
+            <td><button id="GitLabsevengetDataBtn">GitLabSevenData</button></td>
+        </tr>
+    </table>
+</div>
+<!--MongoDB button -->
+<div class="btn-container">
+    <table>
+        <caption>MongoDB Data</caption>
+        <tr>
+            <td><button id="my-mongodbonegetDataBtn">MongoDBOneData</button></td>
+            <td><button id="my-mongodbtwogetDataBtn">MongoDBTwoData</button></td>
+            <td><button id="my-mongodbthreegetDataBtn">MongoDBThreeData</button></td>
+            <td><button id="my-mongodbfivegetDataBtn">MongoDBFiveData</button></td>
+            <td><button id="my-mongodbsevengetDataBtn">MongoDBSevenData</button></td>
+        </tr>
+    </table>
+</div>
+
+<!--Jenkins button -->
+<div class="btn-container">
+    <table>
+        <caption>Jenkins Data</caption>
+        <tr>
+            <td><button id="jenkinsonegetDataBtn">JenkinsOneData</button></td>
+            <td><button id="jenkinstwogetDataBtn">JenkinsTwoData</button></td>
+            <td><button id="jenkinsthreegetDataBtn">JenkinsThreeData</button></td>
+            <td><button id="jenkinsfivegetDataBtn">JenkinsFiveData</button></td>
+            <td><button id="jenkinssevengetDataBtn">JenkinsSevenData</button></td>
+        </tr>
+    </table>
+</div>
+
+<!--Sonarqube button -->
+<div class="btn-container">
+    <table>
+        <caption>Sonarqube Data</caption>
+        <tr>
+            <td><button id="SonarqubeonegetDataBtn">SonarqubeOneData</button></td>
+            <td><button id="SonarqubetwogetDataBtn">SonarqubeTwoData</button></td>
+            <td><button id="SonarqubethreegetDataBtn">SonarqubeThreeData</button></td>
+            <td><button id="SonarqubefivegetDataBtn">SonarqubeFiveData</button></td>
+            <td><button id="SonarqubesevengetDataBtn">SonarqubeSevenData</button></td>
+        </tr>
+    </table>
+</div>
+
+<!--Some-redmine button -->
+<div class="btn-container">
+    <table>
+        <caption>Redmine Data</caption>
+        <tr>
+            <td><button id="redmineonegetDataBtn">RedmineOneData</button></td>
+            <td><button id="redminetwogetDataBtn">RedmineTwoData</button></td>
+            <td><button id="redminethreegetDataBtn">RedmineThreeData</button></td>
+            <td><button id="redminefivegetDataBtn">RedmineFiveData</button></td>
+            <td><button id="redminesevengetDataBtn">RedmineSevenData</button></td>
+        </tr>
+    </table>
+</div>
+
+
+
+    <table id="dataTable"></table>
+
+    <script>
+    //Gitlab   
+    function fetchData(url) {
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const dataTable = document.getElementById('dataTable');
+            dataTable.innerHTML = ''; // Clear previous data
+
+            // Create table header
+            const headerRow = document.createElement('tr');
+            Object.keys(data[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+            dataTable.appendChild(headerRow);
+
+            // Create table rows
+            data.forEach(entry => {
+                const row = document.createElement('tr');
+                Object.values(entry).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    row.appendChild(td);
+                });
+                dataTable.appendChild(row);
+            });
+        });
+}
+//GitLab document.getElementById 
+    document.getElementById('GitLabonegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/GitLaboneDaysgetData');
+    });
+
+    document.getElementById('GitLabtwogetDataBtn').addEventListener('click', async () => {
+        await fetchData('/GitLabtwoDaysgetData');
+    });
+
+    document.getElementById('GitLabthreegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/GitLabthreeDaysgetData');
+    });
+
+    document.getElementById('GitLabfivegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/GitLabfiveDaysgetData');
+    });
+
+    document.getElementById('GitLabsevengetDataBtn').addEventListener('click', async () => {
+        await fetchData('/GitLabsevenDaysgetData');
+    });
+
+//mongoDB document.getElementById 
+    document.getElementById('my-mongodbonegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/my-mongodboneDaysgetData');
+    });
+
+    document.getElementById('my-mongodbtwogetDataBtn').addEventListener('click', async () => {
+        await fetchData('/my-mongodbtwoDaysgetData');
+    });
+
+    document.getElementById('my-mongodbthreegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/my-mongodbthreeDaysgetData');
+    });
+
+    document.getElementById('my-mongodbfivegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/my-mongodbfiveDaysgetData');
+    });
+
+    document.getElementById('my-mongodbsevengetDataBtn').addEventListener('click', async () => {
+        await fetchData('/my-mongodbsevenDaysgetData');
+    });    
+
+//jenkins document.getElementById 
+    document.getElementById('jenkinsonegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/gifted_dubinskyoneDaysgetData');
+    });
+
+    document.getElementById('jenkinstwogetDataBtn').addEventListener('click', async () => {
+        await fetchData('/gifted_dubinskytwoDaysgetData');
+    });
+
+    document.getElementById('jenkinsthreegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/gifted_dubinskythreeDaysgetData');
+    });
+
+    document.getElementById('jenkinsfivegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/gifted_dubinskyfiveDaysgetData');
+    });
+
+    document.getElementById('jenkinssevengetDataBtn').addEventListener('click', async () => {
+        await fetchData('/gifted_dubinskysevenDaysgetData');
+    });  
+
+
+//Sonarqube document.getElementById 
+    document.getElementById('SonarqubeonegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/SonarqubeoneDaysgetData');
+    });
+
+    document.getElementById('SonarqubetwogetDataBtn').addEventListener('click', async () => {
+        await fetchData('/SonarqubetwoDaysgetData');
+    });
+
+    document.getElementById('SonarqubethreegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/SonarqubethreeDaysgetData');
+    });
+
+    document.getElementById('SonarqubefivegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/SonarqubefiveDaysgetData');
+    });
+
+    document.getElementById('SonarqubesevengetDataBtn').addEventListener('click', async () => {
+        await fetchData('/SonarqubesevenDaysgetData');
+    }); 
+    
+    
+//some-redmine document.getElementById 
+    document.getElementById('redmineonegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/redmineoneDaysgetData');
+    });
+
+    document.getElementById('redminetwogetDataBtn').addEventListener('click', async () => {
+        await fetchData('/redminetwoDaysgetData');
+    });
+
+    document.getElementById('redminethreegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/redminethreeDaysgetData');
+    });
+
+    document.getElementById('redminefivegetDataBtn').addEventListener('click', async () => {
+        await fetchData('/redminefiveDaysgetData');
+    });
+
+    document.getElementById('redminesevengetDataBtn').addEventListener('click', async () => {
+        await fetchData('/redminesevenDaysgetData');
+    });  
+
+    
+    </script>
+</body>
+</html>
+
+
+
