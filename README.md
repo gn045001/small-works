@@ -4,16 +4,16 @@
 
 此自動化監控系統將利用 OpenShift 的微服務架構，確保每個服務的獨立性和可擴展性。監控容器將通過腳本每分鐘收集 Docker 容器的 CPU 和內存使用情況，並定期檢查硬碟空間。收集到的數據將首先被儲存在本地，然後通過 OpenShift 的 PV（持久卷）和 PVC（持久卷申請）機制將數據持久化到硬碟中。這樣可以確保數據的安全性和可靠性，防止數據丟失。
 
-為了進一步增強系統的功能，可以考慮添加告警機制，當 Docker 容器的資源使用超過預設閾值時，自動觸發告警通知。告警通知可以通過電子郵件、短信或者其他即時通訊工具發送給相關管理人員，確保問題能夠及時處理。此外，還可以設置定期生成報告功能，提供容器資源使用的歷史數據和趨勢分析，幫助優化資源配置和預防潛在問題。
+為了進一步增強系統的功能，可以考慮添加告警機制，當 Docker 容器的資源使用超過預設閾值時，自動觸發告警通知。告警通知可以通過line notify、短信或者其他即時通訊工具發送給相關管理人員，確保問題能夠及時處理。此外，還可以設置定期生成報告功能，提供容器資源使用的歷史數據和趨勢分析，幫助優化資源配置和預防潛在問題。
 
 該監控系統不僅能實時監控 Docker 容器的運行狀態，還能提供豐富的數據分析功能，為運維和管理決策提供有力支持。通過容器化和微服務架構，系統具備了良好的靈活性和擴展性，可以根據需求進行快速調整和擴展。這種設計理念和實現方式，不僅提高了系統的穩定性和可靠性，還有效地提升了運維效率。
 
 ## 執行步驟
   1.建立 Red Hat 和 OpenShift 環境
 
-    -使用 VMware 建立 Red Hat 環境。
-    -在 Red Hat 環境。
-    -部署 OpenShift。
+    -使用 VMware 建立 Red Hat 與 Openshift 環境。
+    -在 Red Hat 環境中設置 Docker 並撰寫 Shell 腳本。
+    -在虛擬機上部署 OpenShift環境。
   
   2.設置監控機制
 
@@ -54,10 +54,13 @@
     
     這些步驟和新增想法可以幫助你建立一個高效的 Docker 監控系統，確保 Docker 容器的運行狀態和硬碟空間使用情況得到實時監控和管理。
 
-
 ## 系統設計方案
-1. VMware 環境: 使用 VMware 建立虛擬機運行 Red Hat 和 OpenShift。
-2. 容器管理平台: 在 Red Hat 和 OpenShift 中部署 Docker 容器。
+
+  1. VMware 環境:
+       使用 VMware 建立虛擬機運行 Red Hat 和 OpenShift。
+  
+  2. 容器管理平台:
+       在 Red Hat 和 OpenShift 中部署 Docker 容器。
 ## 目標
 建立一個每分鐘監控 Docker 運行狀態和硬碟空間資訊的自動化監控機制，並將數據儲存至 MongoDB。
 
@@ -65,27 +68,27 @@
 1. 設置 VMware 環境:
   使用 VMware 創建虛擬機以運行 Red Hat 和 OpenShift。
 
-3. 部署 Red Hat 和 OpenShift:
+2. 部署 Red Hat 和 OpenShift:
   使用 VMware 工具在虛擬機中部署 Red Hat 和 OpenShift。
 
-5. 安裝和配置 Docker:
+3. 安裝和配置 Docker:
   在 Red Hat 和 OpenShift 中安裝和配置 Docker。
 
-6. 編寫監控腳本:
+4. 編寫監控腳本:
   編寫一個 Shell 或 Python 腳本來監控 Docker 容器的運行狀態和硬碟空間資訊。
   使用 docker stats 和 df 命令來獲取所需數據。
   在腳本中添加代碼，將監控數據儲存到 MongoDB 中。
    
   ### Dokcer Hub 的IP
   https://hub.docker.com/repository/docker/gn045001/dockerstate/tags
-7. 設置 Cron Job:
-  使用 crontab 設置每分鐘運行一次的監控腳本。
-      docker shell script 進行執行狀態觀察
+  1. 設置 Cron Job:
+    使用 crontab 設置每分鐘運行一次的監控腳本。
+        docker shell script 進行執行狀態觀察
    
        1. * * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockdata.sh #取得docker stats 資料 ，第一步取得每分鐘的資料   
        2. 0 * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockerstatus.sh #取得放置相關位置並給予 docker進行執行，第二步將資料傳出去
    
-  使用 crontabe 設置每小時docker 運行一次資料整理腳本
+    使用 crontabe 設置每小時docker 運行一次資料整理腳本
   
       1. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/diskreport/raw/:/app/raw/ -v /home/gn045001/diskreport/report:/app/report diskreport #產生report
       2. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/report/raw/:/app/raw/ -v /home/gn045001/report/report:/app/report dockercpureport #產生report
@@ -108,126 +111,15 @@
 ### 繪圖的程式碼
 利用 Diagram as Code 進行繪製
 程式碼為 \temp\diagram\diagram.py
-
-程式碼:
-    from diagrams import Diagram, Cluster, Edge
-    from diagrams.onprem.ci import Jenkins
-    from diagrams.onprem.client import User
-    from diagrams.onprem.vcs import Github, Gitlab, Git
-    from diagrams.onprem.database import Mongodb
-    from diagrams.onprem.monitoring import Grafana, Prometheus
-    from diagrams.alibabacloud.application import NodeJsPerformancePlatform
-    from diagrams.onprem.gitops import Argocd
-    from diagrams.custom import Custom
-    from diagrams.onprem.network import ETCD
     
-    #K8S
-    from diagrams.k8s.clusterconfig import HPA
-    from diagrams.k8s.compute import Deployment, Pod, ReplicaSet, StatefulSet
-    from diagrams.k8s.network import Ingress, Service
-    from diagrams.k8s.storage import PV, PVC, StorageClass
-    
-    
-    #azure
-    from diagrams.azure.general import Templates
-    from diagrams.saas.chat import Line
-    from diagrams.ibm.user import Browser
-    from urllib.request import urlretrieve
-    with Diagram("server_docker_資料加入_mongodb", show=False, outformat="png"):
-    
-        with Cluster("Service One:docker 測試環境"):
-            #規劃github, gitlab的流程
-    
-            with Cluster("CI Continuous Integration"):
-    
-                   
-                #規劃流程
-                bastion = User("User") >> Edge(label="Input Code") >> Git("Git")  
-                github = bastion >> Github("Github")
-                CIpath =github >> Edge(label="Confirm the quality of the code") 
-    
-            with Cluster("CD Continuous Deployment"):
-                
-                #下載Docker圖檔
-                docker_icon = "picture/docker.png"
-    
-                #urlretrieve(docker_url, docker1_icon) 
-                # dockertemp = Custom("docker",docker_icon)
-                #docker 
-                docker1 = Custom("diskreport", docker_icon)
-                docker1 = Custom("diskreport", docker_icon)    
-                docker2 = Custom("InputCPUdataMongoDB", docker_icon)   
-                docker3 = Custom("InputmemorydataMongoDB", docker_icon)   
-                docker4 = Custom("Data input mongoDB", docker_icon)
-    
-    
-                docker5 = Custom("docker", docker_icon)
-    
-    
-                #下載Compute圖檔
-                Compute_icon = "picture/compute.png"
-                compute = Custom("comput state",Compute_icon)
-                
-    
-                #規劃流程
-                #定義取得資料部分
-                CDpath = CIpath >> Jenkins("Jenkins")  >> Edge(label="docker 狀態") >> compute  >> Edge(label="Input Code") >> Templates("JSON")
-                #加入至MongoDB資料
-    
-                #產生rpoert
-                CDpath >> docker1 >> Edge(label="Disk 相關資料的 Report") >> Browser("Browser")
-                CDpath >> docker2 >> Edge(label="Docker CPU Report") >> Browser("Browser")            
-                CDpath >> docker3 >> Edge(label="Dockerstats")  >> Browser("Browser")            
-                CDpath >> docker5 >> Edge(color="firebrick", style="dashed") >> Line("Line")         
-    
-    
-                #Redhat Openshift 測試環境
-        with Cluster("從自我介紹作品的網頁取得資料的 MongoDB 功能"):
-            #下載Google_Chrome.png圖檔
-            GoogleChrome_icon = "picture/Google_Chrome.png"
-            googlechrometemp = Custom("網頁作品",GoogleChrome_icon)
-            docker6 = Custom("CPUData", docker_icon)
-            docker7 = Custom("MemoryData", docker_icon)
-            docker8 = Custom("dockerCPUInformationreportindex", docker_icon)
-            docker9 = Custom("dockermemoryrInformationreportindex", docker_icon)
-            DBpath = CDpath >> docker4 >> Edge(label="Docker Memory Report 、 Input CPU data Mongodb log  、Input Memory data Mongodb log ")  >> Mongodb("Mongodb")
-            DBpath >> docker6 >> Browser("Browser") >> googlechrometemp
-            DBpath >> docker7  >> Browser("Browser") >>  googlechrometemp
-            DBpath >> docker8 >> Browser("Browser") >> googlechrometemp
-            DBpath >> docker9 >>  Browser("Browser") >> googlechrometemp
-            
-        with Cluster("Redhat Openshift 正式環境"):
-            #下載Openshift.png圖檔
-            Openshift_icon = "picture/OpenShift.png"
-            Openshift = Custom("Openshift",Openshift_icon)
-    
-            #下載測試環境圖檔
-            GoogleChrome_icon = "picture/Google_Chrome.png"
-            #下載測試環境圖檔
-            OpenshiftPath = CDpath >>Openshift    
-            #產生rpoert
-            OpenshiftPath >> Pod("diskreport") >> Edge(label="Disk 相關資料的 Report") >> Browser("Browser")
-            OpenshiftPath >> Pod("InputCPUdataMongoDB") >> Edge(label="Docker CPU Report") >> Browser("Browser")
-            OpenshiftPath >> Pod("InputmemorydataMongoDB") >> Edge(label="Dockerstats")  >> Browser("Browser")
-            OpenshiftPath >> Pod("pod") >> Edge(color="firebrick", style="dashed") >> Line("Line")
-            mongoDBOpenshift = OpenshiftPath >> Pod("Data input mongoDB")>> Edge(label="Docker Memory Report 、 Input CPU data Mongodb log  、Input Memory data Mongodb log ")
-        with Cluster("Redhat Openshift 正式環境mongoDB"):
-            googlechrometemp = Custom("網頁作品",GoogleChrome_icon)
-            OpenshifmongoDB = mongoDBOpenshift >> Mongodb("Mongodb")
-            OpenshifmongoDB >> Pod("CPUData") >> Edge(label="") >> Browser("Browser") >> googlechrometemp
-            OpenshifmongoDB >> Pod("MemoryData") >> Browser("Browser") >> googlechrometemp
-            OpenshifmongoDB >> Pod("dockerCPUInformationreportindex") >> Browser("Browser") >> googlechrometemp
-            OpenshifmongoDB >> Pod("dockermemoryrInformationreportindex") >> Browser("Browser") >> googlechrometemp  
-    
-
 ## 執行結果
-
-### 收集資料
 為了有效監控 Docker 容器的運行狀態，我們需要定期收集相關的統計信息。為了實現這一目標，我們使用了兩個腳本：dockdata.sh 和 dockerstatus.sh。
 
 為了每分鐘收集一次 Docker 統計信息並將其存儲為 JSON 文件，我們可以使用一個名為 'dockdata.sh' 的 shell 腳本。該腳本定期運行，每分鐘收集 Docker 統計信息，然後將其保存為 JSON 文件。這些文件將在一小時後通過另一個腳本 'dockerstatus.sh' 創建的文件夾中組織和存儲。
 
 首先，我們需要修改 'dockdata.sh' 腳本，以便它每分鐘運行一次並將結果保存為 JSON 文件。然後，我們將編寫 'dockerstatus.sh' 腳本，以在一小時後創建所需的文件夾結構。
+
+### 收集資料
 
 這樣的設置可讓我們有效監控 Docker 的運行狀態和磁盤空間使用情況，並在需要時輕鬆檢視過去一小時的數據。這對於 Docker 環境的監控和管理非常有用。
 
@@ -304,25 +196,25 @@
 ## Openshift  自動化監控和管理證書過期狀態是確保系統安全運行
 在現代 IT 環境中，自動化監控和管理證書過期狀態是確保系統安全運行的關鍵。本文將介紹如何通過一個整合 Shell 腳本和 Node.js 應用的解決方案，來自動化監控 OpenShift 證書的過期狀態，並將數據儲存到 MongoDB 中。
 
-方案概述
+### 方案概述
 我們的解決方案包含兩個主要部分：
 
-Shell 腳本 certificateexpiredate.sh：該腳本執行 Node.js 腳本 certificateexpiredate.js，從而生成證書過期數據並將其存儲到 MongoDB 中。
-Node.js 應用 openshiftreport.js：這個應用在 2005 端口運行，提供一個 web 接口，用於檢查證書是否即將過期。
-Shell 腳本：certificateexpiredate.sh
+  1. Shell 腳本 certificateexpiredate.sh：該腳本執行 Node.js 腳本 certificateexpiredate.js，從而生成證書過期數據並將其存儲到 MongoDB 中。
+  2. Node.js 應用 openshiftreport.js：這個應用在 2005 端口運行，提供一個 web 接口，用於檢查證書是否即將過期。
+  3. Shell 腳本：certificateexpiredate.sh
 首先，我們需要創建一個 Shell 腳本 certificateexpiredate.sh，該腳本會執行 certificateexpiredate.js，並將結果存儲為 JSON 文件，同時將數據插入到 MongoDB 中。
 
 在現代企業中，確保系統的穩定運行和安全性至關重要。為了實現這一目標，監控證書的有效期是不可或缺的一環。通過定期檢查和更新證書，可以避免因證書過期而導致的服務中斷或安全漏洞。
 
-自動化監控過程
+### 自動化監控過程
 certificateexpiredate.sh：這是一個強大的腳本，設計用來檢查系統中所有重要證書的有效期。當腳本執行時，它會掃描指定目錄中的證書，提取它們的過期日期，並將這些信息存儲在 MongoDB 資料庫中。這樣一來，系統管理員可以方便地查詢和分析證書的有效期信息。此外，腳本還會生成一個 JSON 文件，其中包含了所有證書的詳細信息，便於後續的數據處理和報告生成。
 
 openshiftreport.js：這是一個基於 Node.js 的應用程序，它的主要功能是提供一個 web 服務，用於展示證書的有效期信息。當應用程序啟動時，它會監聽 2005 端口，並從 MongoDB 中提取證書的有效期數據，生成一個動態報告。通過訪問該端口，系統管理員可以方便地查看所有證書的當前狀態，並及時發現即將過期的證書。這樣一來，管理員就可以提前採取措施，更新即將過期的證書，從而避免服務中斷和安全風險。
 
-整合的效益
+### 整合的效益
 這兩個工具的結合使用，不僅提高了證書管理的效率，還增強了系統的安全性。通過自動化檢查和報告生成，系統管理員可以將更多的時間和精力投入到其他重要任務中。此外，將證書信息存儲在 MongoDB 中，還便於數據的長期存檔和歷史查詢。這樣的設計不僅提高了管理的便捷性，還為系統的持續運行提供了可靠保障。
 
-結論
+#### 結論
 certificateexpiredate.sh 和 openshiftreport.js 是兩個非常實用的工具，它們通過自動化的方式，幫助系統管理員高效地管理和監控證書的有效期。通過這樣的工具組合，企業可以大幅降低因證書過期而帶來的風險，確保系統的穩定運行和數據安全。
 
 ## JumpServer.yaml 建立一個跳板機
