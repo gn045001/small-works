@@ -79,16 +79,16 @@
   使用 docker stats 和 df 命令來獲取所需數據。
   在腳本中添加代碼，將監控數據儲存到 MongoDB 中。
    
-  ### Dokcer Hub 的IP
+  ### Dokcer Hub 的網址
   https://hub.docker.com/repository/docker/gn045001/dockerstate/tags
   1. 設置 Cron Job:
     使用 crontab 設置每分鐘運行一次的監控腳本。
         docker shell script 進行執行狀態觀察
    
-       1. * * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockdata.sh #取得docker stats 資料 ，第一步取得每分鐘的資料   
-       2. 0 * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockerstatus.sh #取得放置相關位置並給予 docker進行執行，第二步將資料傳出去
+    1. * * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockdata.sh #取得docker stats 資料 ，第一步取得每分鐘的資料
+    2. 0 * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockerstatus.sh #取得放置相關位置並給予 docker進行執行，第二步將資料傳出去
    
-    使用 crontabe 設置每小時docker 運行一次資料整理腳本
+  使用 crontabe 設置每小時docker 運行一次資料整理腳本
   
       1. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/diskreport/raw/:/app/raw/ -v /home/gn045001/diskreport/report:/app/report diskreport #產生report
       2. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/report/raw/:/app/raw/ -v /home/gn045001/report/report:/app/report dockercpureport #產生report
@@ -108,7 +108,7 @@
 
 ![server1](https://i.imgur.com/7cbe5qJ.png)
 
-### 繪圖的程式碼
+## 繪圖的程式碼
 利用 Diagram as Code 進行繪製
 程式碼為 \temp\diagram\diagram.py
     
@@ -128,7 +128,7 @@
 然後，修改程式碼以將 JSON 文件保存到指定的文件夾中。最後，在 'dockerstatus.sh' 中，我們需要添加程式碼以在一小時後創建相應的文件夾。這樣就能確保每分鐘收集到的 Docker 統計信息會在適當的時間保存在正確的文件夾中，以供稍後分析和使用。
 
 ### 個別資料夾執行各種需求
-    每隔五分鐘，我們使用以下指令在Docker容器中運行特定映像檔，以生成報告：
+      每隔五分鐘，我們使用以下指令在Docker容器中運行特定映像檔，以生成報告：
       每小時的第 5 分鐘執行以下指令，使用 ~/.bash_profile 設定環境變數
       容器的 /app/raw/ 掛載到本地目錄 /home/gn045001/diskreport/raw/，將 /app/report 掛載到 /home/gn045001/diskreport/report
       執行 diskreport 容器，生成報告
