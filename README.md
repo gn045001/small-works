@@ -1,4 +1,4 @@
-# 我的serve1專案
+# serve1專案
 
 利用 VMware 建立 Red Hat 和 OpenShift 環境，實現自動化監控機制來監控 Docker 的運行狀態與硬碟空間資訊。每分鐘收集資料並將其儲存到 MongoDB 中。該機制將以容器化形式運行在 OpenShift 的 Pod 中，進行資料整理與分析。
 
