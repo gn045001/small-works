@@ -4,64 +4,54 @@
 
 此自動化監控系統將利用 OpenShift 的微服務架構，確保每個服務的獨立性和可擴展性。監控容器將通過腳本每分鐘收集 Docker 容器的 CPU 和內存使用情況，並定期檢查硬碟空間。收集到的數據將首先被儲存在本地，然後通過 OpenShift 的 PV（持久卷）和 PVC（持久卷申請）機制將數據持久化到硬碟中。這樣可以確保數據的安全性和可靠性，防止數據丟失。
 
-為了進一步增強系統的功能，可以考慮添加告警機制，當 Docker 容器的資源使用超過預設閾值時，自動觸發告警通知。告警通知可以通過line notify、短信或者其他即時通訊工具發送給相關管理人員，確保問題能夠及時處理。此外，還可以設置定期生成報告功能，提供容器資源使用的歷史數據和趨勢分析，幫助優化資源配置和預防潛在問題。
+為了進一步增強系統的功能，可以考慮添加告警機制，當 Docker 容器的資源使用超過預設閾值時，自動觸發告警通知。告警通知可以通過 Line Notify、短信或者其他即時通訊工具發送給相關管理人員，確保問題能夠及時處理。此外，還可以設置定期生成報告功能，提供容器資源使用的歷史數據和趨勢分析，幫助優化資源配置和預防潛在問題。
 
 該監控系統不僅能實時監控 Docker 容器的運行狀態，還能提供豐富的數據分析功能，為運維和管理決策提供有力支持。通過容器化和微服務架構，系統具備了良好的靈活性和擴展性，可以根據需求進行快速調整和擴展。這種設計理念和實現方式，不僅提高了系統的穩定性和可靠性，還有效地提升了運維效率。
 
 ## 執行步驟
   1.建立 Red Hat 和 OpenShift 環境
 
-    -使用 VMware 建立 Red Hat 與 Openshift 環境。
-    -在 Red Hat 環境中設置 Docker 並撰寫 Shell 腳本。
-    -在虛擬機上部署 OpenShift環境。
+    使用 VMware 建立 Red Hat 與 OpenShift 環境。
+    在 Red Hat 環境中設置 Docker 並撰寫 Shell 腳本。
+    在虛擬機上部署 OpenShift 環境。
   
   2.設置監控機制
 
-    -編寫 shell 腳本 dockdata.sh 和 dockerstatus.sh 來收集 Docker 的運行狀態與硬碟空間資訊。
-    
-    -每分鐘執行 dockdata.sh 收集 Docker 資料，並將其儲存為 JSON 文件。
-    
-    -每小時執行 dockerstatus.sh 創建資料夾（如 diskreport、report、dockerstats），並將 JSON 文件移動到相應資料夾中。
+    編寫 shell 腳本 dockdata.sh 和 dockerstatus.sh 來收集 Docker 的運行狀態與硬碟空間資訊。
+    每分鐘執行 dockdata.sh 收集 Docker 資料，並將其儲存為 JSON 文件。
+    每小時執行 dockerstatus.sh 創建資料夾（如 diskreport、report、dockerstats），並將 JSON 文件移動到相應資料夾中。
 
   3.將數據存儲到 MongoDB
 
-    -編寫腳本將收集到的 JSON 文件中的數據寫入 MongoDB 中，以便進行後續分析。
+    編寫腳本將收集到的 JSON 文件中的數據寫入 MongoDB 中，以便進行後續分析。
   
   4.容器化監控機制
 
-    -將監控腳本和相關配置打包成 Docker 映像。
+    將監控腳本和相關配置打包成 Docker 映像。
     
-    -在 OpenShift 中創建 Pod 並運行這些容器化的監控映像，確保監控機制在 Pod 中運行。
+    在 OpenShift 中創建 Pod 並運行這些容器化的監控映像，確保監控機制在 Pod 中運行。
   
   5.數據整理與分析
 
-    -編寫應用程序從 MongoDB 中提取數據，並進行整理與分析。
+    編寫應用程序從 MongoDB 中提取數據，並進行整理與分析。
     
-    -將結果展示在 Web 界面上，方便監控和管理。
+    將結果展示在 Web 界面上，方便監控和管理。
 ## 修改與新增部分
 
-    -利用 VMware 建立 Red Hat 和 OpenShift 環境，並實現一個自動化監控機制來監控 Docker 的運行狀態與硬碟空間資訊。
-    
-    -每分鐘收集資料並將其儲存到 MongoDB 中。
-    
-    -監控機制將以容器化形式運行在 OpenShift 的 Pod 中，進行資料整理與分析。
-    
-    -編寫專用的監控腳本來實現數據收集和存儲，確保數據的準確性和實時性。
-    
-    -在 OpenShift 中運行監控容器，實現高效的資源管理和擴展能力。
-    
-    -開發前端應用程序，實時顯示 Docker 運行狀態和硬碟空間使用情況，提供便捷的監控和管理界面。
-    
-    這些步驟和新增想法可以幫助你建立一個高效的 Docker 監控系統，確保 Docker 容器的運行狀態和硬碟空間使用情況得到實時監控和管理。
+    利用 VMware 建立 Red Hat 和 OpenShift 環境，並實現一個自動化監控機制來監控 Docker 的運行狀態與硬碟空間資訊。
+    每分鐘收集資料並將其儲存到 MongoDB 中。
+    監控機制將以容器化形式運行在 OpenShift 的 Pod 中，進行資料整理與分析。
+    編寫專用的監控腳本來實現數據收集和存儲，確保數據的準確性和實時性。
+    在 OpenShift 中運行監控容器，實現高效的資源管理和擴展能力。
+    開發前端應用程序，實時顯示 Docker 運行狀態和硬碟空間使用情況，提供便捷的監控和管理界面。
+  這些步驟和新增想法可以幫助你建立一個高效的 Docker 監控系統，確保 Docker 容器的運行狀態和硬碟空間使用情況得到實時監控和管理。
 
 ## 系統設計方案
 
-  1. VMware 環境:
-       使用 VMware 建立虛擬機運行 Red Hat 和 OpenShift。
-  
-  2. 容器管理平台:
-       在 Red Hat 和 OpenShift 中部署 Docker 容器。
+    VMware 環境: 使用 VMware 建立虛擬機運行 Red Hat 和 OpenShift。
+    容器管理平台: 在 Red Hat 和 OpenShift 中部署 Docker 容器。
 ## 目標
+
 建立一個每分鐘監控 Docker 運行狀態和硬碟空間資訊的自動化監控機制，並將數據儲存至 MongoDB。
 
 ## 監控機制步驟
@@ -82,8 +72,9 @@
   ### Dokcer Hub 的網址
   https://hub.docker.com/repository/docker/gn045001/dockerstate/tags
   1. 設置 Cron Job:
-    使用 crontab 設置每分鐘運行一次的監控腳本。
-        docker shell script 進行執行狀態觀察
+    設置 Cron Job: 使用 crontab 設置每分鐘運行一次的監控腳本。
+      dockdata.sh 每分鐘收集 Docker stats 資料
+      dockerstatus.sh 每小時將資料整理並傳送
    
     1. * * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockdata.sh #取得docker stats 資料 ，第一步取得每分鐘的資料
     2. 0 * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockerstatus.sh #取得放置相關位置並給予 docker進行執行，第二步將資料傳出去
@@ -109,23 +100,19 @@
 ![server1](https://i.imgur.com/7cbe5qJ.png)
 
 ## 繪圖的程式碼
-利用 Diagram as Code 進行繪製
-程式碼為 \temp\diagram\diagram.py
+  利用 Diagram as Code 進行繪製
+  程式碼為 \temp\diagram\diagram.py
     
-## 執行結果
-為了有效監控 Docker 容器的運行狀態，我們需要定期收集相關的統計信息。為了實現這一目標，我們使用了兩個腳本：dockdata.sh 和 dockerstatus.sh。
-
-為了每分鐘收集一次 Docker 統計信息並將其存儲為 JSON 文件，我們可以使用一個名為 'dockdata.sh' 的 shell 腳本。該腳本定期運行，每分鐘收集 Docker 統計信息，然後將其保存為 JSON 文件。這些文件將在一小時後通過另一個腳本 'dockerstatus.sh' 創建的文件夾中組織和存儲。
-
-首先，我們需要修改 'dockdata.sh' 腳本，以便它每分鐘運行一次並將結果保存為 JSON 文件。然後，我們將編寫 'dockerstatus.sh' 腳本，以在一小時後創建所需的文件夾結構。
+## 執行結果  為了有效監控 Docker 容器的運行狀態，我們需要定期收集相關的統計信息。為了實現這一目標，我們使用了兩個腳本：dockdata.sh 和 dockerstatus.sh。
+  
+  為了每分鐘收集一次 Docker 統計信息並將其存儲為 JSON 文件，我們可以使用一個名為 'dockdata.sh' 的 shell 腳本。該腳本定期運行，每分鐘收集 Docker 統計信息，然後將其保存為 JSON 文件。這些文件將在一小時後通過另一個腳本 'dockerstatus.sh' 創建的文件夾中組織和存儲。  
+  首先，我們需要修改 'dockdata.sh' 腳本，以便它每分鐘運行一次並將結果保存為 JSON 文件。然後，我們將編寫 'dockerstatus.sh' 腳本，以在一小時後創建所需的文件夾結構。
 
 ### 收集資料
 
-這樣的設置可讓我們有效監控 Docker 的運行狀態和磁盤空間使用情況，並在需要時輕鬆檢視過去一小時的數據。這對於 Docker 環境的監控和管理非常有用。
-
-為了實現每分鐘收集 Docker 統計信息並將其存儲為 JSON 文件的目標，我們需要修改 'dockdata.sh' 腳本，以便將 JSON 文件保存到適當的文件夾中。首先，在 'dockdata.sh' 中添加程式碼來收集 Docker 統計信息並將其轉換為 JSON 格式。
-
-然後，修改程式碼以將 JSON 文件保存到指定的文件夾中。最後，在 'dockerstatus.sh' 中，我們需要添加程式碼以在一小時後創建相應的文件夾。這樣就能確保每分鐘收集到的 Docker 統計信息會在適當的時間保存在正確的文件夾中，以供稍後分析和使用。
+  這樣的設置可讓我們有效監控 Docker 的運行狀態和磁盤空間使用情況，並在需要時輕鬆檢視過去一小時的數據。這對於 Docker 環境的監控和管理非常有用。  
+  為了實現每分鐘收集 Docker 統計信息並將其存儲為 JSON 文件的目標，我們需要修改 'dockdata.sh' 腳本，以便將 JSON 文件保存到適當的文件夾中。首先，在 'dockdata.sh' 中添加程式碼來收集 Docker 統計信息並將其轉換為 JSON 格式。  
+  然後，修改程式碼以將 JSON 文件保存到指定的文件夾中。最後，在 'dockerstatus.sh' 中，我們需要添加程式碼以在一小時後創建相應的文件夾。這樣就能確保每分鐘收集到的 Docker 統計信息會在適當的時間保存在正確的文件夾中，以供稍後分析和使用。
 
 ### 個別資料夾執行各種需求
       每隔五分鐘，我們使用以下指令在Docker容器中運行特定映像檔，以生成報告：
