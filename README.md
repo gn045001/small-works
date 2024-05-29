@@ -11,28 +11,28 @@
 將資料儲存到 MongoDB 是該監控系統的一個重要組成部分。每次收集到的 Docker 運行狀態和硬碟空間資訊都會即時存入 MongoDB 中，從而實現數據的持久化和可查詢性。這不僅便於後續的數據分析和報告生成，還能確保數據在多次讀寫和存儲過程中的一致性和完整性。MongoDB 的靈活性和高效查詢能力使其成為這種監控系統的理想選擇。
 
 ## 執行步驟
-  1.建立 Red Hat 和 OpenShift 環境
+  ### 1.建立 Red Hat 和 OpenShift 環境
 
     使用 VMware 建立 Red Hat 與 OpenShift 環境。
     在 Red Hat 環境中設置 Docker 並撰寫 Shell 腳本。
     在虛擬機上部署 OpenShift 環境。
   
-  2.設置監控機制
+  ### 2.設置監控機制
 
     編寫 shell 腳本 dockdata.sh 和 dockerstatus.sh 來收集 Docker 的運行狀態與硬碟空間資訊。
     每分鐘執行 dockdata.sh 收集 Docker 資料，並將其儲存為 JSON 文件。
     每小時執行 dockerstatus.sh 創建資料夾（如 diskreport、report、dockerstats），並將 JSON 文件移動到相應資料夾中。
 
-  3.將數據存儲到 MongoDB
+  ### 3.將數據存儲到 MongoDB
 
     編寫腳本將收集到的 JSON 文件中的數據寫入 MongoDB 中，以便進行後續分析。
   
-  4.容器化監控機制
+  ### 4.容器化監控機制
 
     將監控腳本和相關配置打包成 Docker 映像。    
     在 OpenShift 中創建 Pod 並運行這些容器化的監控映像，確保監控機制在 Pod 中運行。
   
-  5.數據整理與分析
+  ### 5.數據整理與分析
 
     編寫應用程序從 MongoDB 中提取數據，並進行整理與分析。    
     將結果展示在 Web 界面上，方便監控和管理。
@@ -56,23 +56,23 @@
 建立一個每分鐘監控 Docker 運行狀態和硬碟空間資訊的自動化監控機制，並將數據儲存至 MongoDB。
 
 ## 監控機制步驟
-1. 設置 VMware 環境:
+### 1. 設置 VMware 環境:
   使用 VMware 創建虛擬機以運行 Red Hat 和 OpenShift。
 
-2. 部署 Red Hat 和 OpenShift:
+### 2. 部署 Red Hat 和 OpenShift:
   使用 VMware 工具在虛擬機中部署 Red Hat 和 OpenShift。
 
-3. 安裝和配置 Docker:
+### 3. 安裝和配置 Docker:
   在 Red Hat 和 OpenShift 中安裝和配置 Docker。
 
-4. 編寫監控腳本:
+### 4. 編寫監控腳本:
   編寫一個 Shell 或 Python 腳本來監控 Docker 容器的運行狀態和硬碟空間資訊。
   使用 docker stats 和 df 命令來獲取所需數據。
   在腳本中添加代碼，將監控數據儲存到 MongoDB 中。
    
   ### Dokcer Hub 的網址
   https://hub.docker.com/repository/docker/gn045001/dockerstate/tags
-  1. 設置 Cron Job:
+  #### 設置 Cron Job:
     設置 Cron Job: 使用 crontab 設置每分鐘運行一次的監控腳本。
       dockdata.sh 每分鐘收集 Docker stats 資料
       dockerstatus.sh 每小時將資料整理並傳送
@@ -80,7 +80,7 @@
     1. * * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockdata.sh #取得docker stats 資料 ，第一步取得每分鐘的資料
     2. 0 * * * * . ~/.bash_profile; /home/gn045001/shellscript/dockerstatus.sh #取得放置相關位置並給予 docker進行執行，第二步將資料傳出去
    
-  使用 crontabe 設置每小時docker 運行一次資料整理腳本
+  #### 使用 crontabe 設置每小時docker 運行一次資料整理腳本
   
       1. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/diskreport/raw/:/app/raw/ -v /home/gn045001/diskreport/report:/app/report diskreport #產生report
       2. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/report/raw/:/app/raw/ -v /home/gn045001/report/report:/app/report dockercpureport #產生report
@@ -89,7 +89,7 @@
       5. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/dockerstats/raw/:/app/raw/ -v /home/gn045001/dockerstats/inputmemorydatamongodblog:/app/log inputmemorydatamongodb  #加入至DB而已
       6. 5 * * * * . ~/.bash_profile;docker run -v /home/gn045001/dockerstats/raw/:/app/raw/ -v /home/gn045001/dockerstats/log:/app/log dockerstats #加入至DB而已
   
-  Drawalinecpuusagechart
+  #### Drawalinecpuusagechart
 
      1. docker run -p 2000:2000 -v /home/gn045001/dockerstats/report/:/app/report/ -v /home/gn045001/dockerstats/log:/app/log drawalinecpuusagechart
      2. docker run -p 2001:2001 -v /home/gn045001/dockerstats/report/:/app/report/ -v /home/gn045001/dockerstats/log:/app/log drawalinememoryusagechart
